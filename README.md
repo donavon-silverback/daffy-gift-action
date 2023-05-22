@@ -143,3 +143,5 @@ You will need to copy the API key and add it to your repository's [secrets](http
 ## Gifting a PR author
 
 Now that you have your action setup, it's time to use it! You will need to create an issue label in your repository named `Get $25 for Charity` (or whatever dollar amount you wish). Then assign the label to any issue where you intend to gift the person who works on the issue. When a PR is linked to such an issue, the author of the PR will receive the gift when the PR is merged.
+
+## License
