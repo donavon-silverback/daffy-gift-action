@@ -1,8 +1,10 @@
 # Daddy Gift GitHub Action
 
+<img src="https://daffy.ghost.io/content/images/2023/03/6.png" width="608" height="342" />
+
 Reward the people who contribute to your open source projects by gifting a charitable donation to the charity of their choice.
 
-Imagine you have a project that you want to encourage people to contribute to. You can use this GitHub Action to gift a charitable donation to the person who fixes an high-profile Issue.
+Imagine you have an Open Source project that you want to encourage people to contribute to. You can use this GitHub Action to gift a charitable donation to the person who fixes an high-profile Issue.
 
 For example... Say you have am particularity complicated Issue. You could label that issue with `Get $25 for Charity`. When someone fixes the Issue and creates a PR, you can merge the PR and the GitHub Action will automatically gift the PR author $25 to the charity of their choice.
 
