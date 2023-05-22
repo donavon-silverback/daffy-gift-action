@@ -1,11 +1,13 @@
-name: 'Your name here'
+name: 'Daffy Gift Action'
 description: 'Provide a description here'
-author: 'Your name or organization here'
+author: 'Donavon West - Daffy.org'
 inputs:
-  milliseconds: # change this
+  github_token:
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: 'Your GitHub token.'
+  daffy_api_key:
+    required: true
+    description: 'Your Daffy API key. Learn more at https://docs.daffy.org'
 runs:
   using: 'node16'
   main: 'dist/index.js'
