@@ -1,7 +1,7 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github';
 import { DaffyClient } from './daffy';
-import { addComment, getAssociatedIssues, getPullRequest, getPullRequestAuthor } from './github';
+import { getAssociatedIssues, getPullRequest, getPullRequestAuthor } from './github';
 import { getAmount } from './getAmount';
 
 async function run(): Promise<void> {
@@ -41,7 +41,7 @@ async function run(): Promise<void> {
     }
 
     // Get the PR author's GitHub email address and name
-    const { email, name, login } = getPullRequestAuthor(pr);
+    const { email, name } = getPullRequestAuthor(pr);
 
     const isMerged = github.context.payload.pull_request?.merged;
     if (!isMerged) {
@@ -53,9 +53,6 @@ async function run(): Promise<void> {
     const message = `Thank you for your contribution to open source! You have earned a gift of $${amount} to donate to the charity of your choice.`;
     const client = new DaffyClient(apiKey);
     await client.sendGift({ name, amount, email, message });
-
-    // Add a comment to the PR with a "thank you" message
-    addComment(octokit, pr, `@${login},\n\n${message}\n\n— Powered by [Daffy](https://daffy.org))`);
 
     core.info(`💰 A gift of $${amount} has been sent to ${name}`);
   } catch (exception) {

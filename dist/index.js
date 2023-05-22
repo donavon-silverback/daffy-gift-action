@@ -256,7 +256,7 @@ function run() {
                 return;
             }
             // Get the PR author's GitHub email address and name
-            const { email, name, login } = (0, github_1.getPullRequestAuthor)(pr);
+            const { email, name } = (0, github_1.getPullRequestAuthor)(pr);
             const isMerged = (_a = github.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.merged;
             if (!isMerged) {
                 core.info(`💰 Once this PR is merged, a gift of $${amount} will be sent to ${name}`);
@@ -266,8 +266,6 @@ function run() {
             const message = `Thank you for your contribution to open source! You have earned a gift of $${amount} to donate to the charity of your choice.`;
             const client = new daffy_1.DaffyClient(apiKey);
             yield client.sendGift({ name, amount, email, message });
-            // Add a comment to the PR with a "thank you" message
-            (0, github_1.addComment)(octokit, pr, `@${login},\n\n${message}\n\n— Powered by [Daffy](https://daffy.org))`);
             core.info(`💰 A gift of $${amount} has been sent to ${name}`);
         }
         catch (exception) {
