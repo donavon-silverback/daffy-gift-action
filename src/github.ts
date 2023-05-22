@@ -1,4 +1,3 @@
-import * as core from '@actions/core';
 import * as github from '@actions/github';
 import { Issue, Octokit, PullRequest } from './types';
 
@@ -35,7 +34,6 @@ export const getAssociatedIssues = async (octokit: Octokit, pr: PullRequest): Pr
     /(?:Fixes|Fix|Fixed|Closes|Close|Closed|Resolves|Resolve|Resolved)\s+#(\d+)/gi
   );
   if (!matches) {
-    core.info('No issues found in PR body');
     return [];
   }
   // Get the issue numbers from the regex matches
@@ -74,6 +72,4 @@ export const addComment = async (
     issue_number: pr.number,
     body: message,
   });
-
-  core.info(`💬 Comment added to PR #${pr.number}`);
 };

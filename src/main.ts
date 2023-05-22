@@ -25,14 +25,20 @@ async function run(): Promise<void> {
 
     // Get an array of associated issues (e.g. "Fixes #123", or "Resoled #456", etc.)
     const issues = await getAssociatedIssues(octokit, pr);
-    if (issues.length === 0) return;
+    if (issues.length === 0) {
+      core.info('🤖 Skipping... No issues found in PR body');
+      return;
+    }
 
     // core.debug(`🤖 issues found ${JSON.stringify(issues, null, 2)}}`);
 
     // Search through all issues looking for labels that match "Get $xx for Charity"
     // and sum up the total amount
     const amount = getAmount(issues);
-    if (amount === 0) return;
+    if (amount === 0) {
+      core.info('🤖 Skipping... Amount is $0');
+      return;
+    }
 
     // Get the PR author's GitHub email address and name
     const { email, name, login } = getPullRequestAuthor(pr);
@@ -51,6 +57,8 @@ async function run(): Promise<void> {
 
     // Add a comment to the PR with a "thank you" message
     addComment(octokit, pr, `@${login},\n\n${message}\n\n— Powered by [Daffy](https://daffy.org))`);
+    core.info(`💬 Comment added to PR #${pr.number}`);
+
     core.info(`💰 A gift of $${amount} has been sent to ${name}<${email}>`);
   } catch (exception) {
     const message = exception instanceof Error ? exception.message : 'unknown error';

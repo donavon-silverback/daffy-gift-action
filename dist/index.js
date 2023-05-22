@@ -112,7 +112,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.addComment = exports.getLabelText = exports.getAssociatedIssues = exports.getPullRequestAuthor = exports.getPullRequest = void 0;
-const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
 const getPullRequest = (octokit) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
@@ -147,7 +146,6 @@ const getAssociatedIssues = (octokit, pr) => __awaiter(void 0, void 0, void 0, f
     var _b;
     const matches = (_b = pr.body) === null || _b === void 0 ? void 0 : _b.matchAll(/(?:Fixes|Fix|Fixed|Closes|Close|Closed|Resolves|Resolve|Resolved)\s+#(\d+)/gi);
     if (!matches) {
-        core.info('No issues found in PR body');
         return [];
     }
     // Get the issue numbers from the regex matches
@@ -176,7 +174,6 @@ const addComment = (octokit, pr, message) => __awaiter(void 0, void 0, void 0, f
         issue_number: pr.number,
         body: message,
     });
-    core.info(`💬 Comment added to PR #${pr.number}`);
 });
 exports.addComment = addComment;
 
@@ -245,14 +242,18 @@ function run() {
             // core.debug(`🤖 PR found ${JSON.stringify(pr, null, 2)}}`);
             // Get an array of associated issues (e.g. "Fixes #123", or "Resoled #456", etc.)
             const issues = yield (0, github_1.getAssociatedIssues)(octokit, pr);
-            if (issues.length === 0)
+            if (issues.length === 0) {
+                core.info('🤖 Skipping... No issues found in PR body');
                 return;
+            }
             // core.debug(`🤖 issues found ${JSON.stringify(issues, null, 2)}}`);
             // Search through all issues looking for labels that match "Get $xx for Charity"
             // and sum up the total amount
             const amount = (0, getAmount_1.getAmount)(issues);
-            if (amount === 0)
+            if (amount === 0) {
+                core.info('🤖 Skipping... Amount is $0');
                 return;
+            }
             // Get the PR author's GitHub email address and name
             const { email, name, login } = (0, github_1.getPullRequestAuthor)(pr);
             if (!pr.merged) {
@@ -265,6 +266,7 @@ function run() {
             yield client.sendGift({ name, amount, email, message });
             // Add a comment to the PR with a "thank you" message
             (0, github_1.addComment)(octokit, pr, `@${login},\n\n${message}\n\n— Powered by [Daffy](https://daffy.org))`);
+            core.info(`💬 Comment added to PR #${pr.number}`);
             core.info(`💰 A gift of $${amount} has been sent to ${name}<${email}>`);
         }
         catch (exception) {
