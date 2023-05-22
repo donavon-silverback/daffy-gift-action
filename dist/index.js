@@ -22,20 +22,12 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.DaffyClient = void 0;
 const axios_1 = __importDefault(__nccwpck_require__(8757));
 // Learn more at https://docs.daffy.org
-const apiBaseUrl = 'https://api.daffy.org/public/api/v1';
+const apiBaseUrl = 'https://public.daffy.org/public/api/v1';
 class DaffyClient {
     constructor(apiKey) {
         this.apiKey = apiKey;
     }
-    /**
-     * Send a Daffy gift to a user by name.
-     * @param {SendGift} props The gift properties.
-     * @param {string} props.name The name of the user to send the gift to.
-     * @param {number} props.amount The amount of the gift.
-     * @param {string} props.email The email address of the user to send the gift to.
-     * @param {string} props.message The message to include with the gift.
-     * @returns {Promise<Gift>} The response data from the API.
-     */
+    /** Send a Daffy gift to a user by name. */
     sendGift(props) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -70,10 +62,7 @@ const getAmount = (issues) => {
         const amount = issue.labels
             .map((label) => (0, github_1.getLabelText)(label).match(/Get \$([0-9]+) for Charity/))
             .flatMap((match) => (match ? [match[1]] : []))
-            .map((labelAmount) => {
-            // core.debug(`🤖 found issue #${issue.number} with amount $${labelAmount}`);
-            return parseInt(labelAmount, 10);
-        })
+            .map((labelAmount) => parseInt(labelAmount, 10))
             .reduce((issueTotal, labelAmount) => issueTotal + labelAmount, 0);
         return total + amount;
     }, 0);
@@ -146,11 +135,10 @@ const getPullRequestAuthor = (pr) => {
     if (!pr.user)
         throw new Error('No user found on pull request');
     const { email, name, login } = pr.user;
-    // if (!email || !name) throw new Error('No email or name found on user');
     // Arrg! GitHub doesn't return the user's name or email address!!!
     return {
         name: name || login,
-        email: email || 'email@example.com',
+        email: email || undefined,
         login,
     };
 };
@@ -241,10 +229,11 @@ const getAmount_1 = __nccwpck_require__(9287);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const token = core.getInput('token'); // get the GitHub token
+            const token = core.getInput('github_token');
+            core.info(`token: ${JSON.stringify(token, null, 2)}`);
             if (!token)
                 throw new Error('GitHub token not found');
-            const apiKey = core.getInput('daffy_api_key'); // get the Daffy API key
+            const apiKey = core.getInput('daffy_api_key');
             if (!apiKey)
                 throw new Error('Daffy API key not found');
             core.info('🤖 Daffy Gift Action is running...');
@@ -254,7 +243,7 @@ function run() {
             if (!pr)
                 return;
             // core.debug(`🤖 PR found ${JSON.stringify(pr, null, 2)}}`);
-            // Get an array of associated issues (e.g. "Fixes #123", etc.)
+            // Get an array of associated issues (e.g. "Fixes #123", or "Resoled #456", etc.)
             const issues = yield (0, github_1.getAssociatedIssues)(octokit, pr);
             if (issues.length === 0)
                 return;
@@ -262,25 +251,25 @@ function run() {
             // Search through all issues looking for labels that match "Get $xx for Charity"
             // and sum up the total amount
             const amount = (0, getAmount_1.getAmount)(issues);
+            if (amount === 0)
+                return;
             // Get the PR author's GitHub email address and name
             const { email, name, login } = (0, github_1.getPullRequestAuthor)(pr);
-            const message = `Thank you for your contribution to open source! You have earned a gift of $${amount} to donate to a charity of your choice — powered by Daffy.`;
-            // Add a comment to the PR with a "thank you" message
-            (0, github_1.addComment)(octokit, pr, `@${login},\n\n${message}`);
             if (!pr.merged) {
                 core.info(`💰 Once this PR is merged, a gift of $${amount} will be sent to ${name}<${email}>`);
                 return;
             }
             // Issue a POST to the Daffy API to send a gift
+            const message = `Thank you for your contribution to open source! You have earned a gift of $${amount} to donate to the charity of your choice.`;
             const client = new daffy_1.DaffyClient(apiKey);
             yield client.sendGift({ name, amount, email, message });
             // Add a comment to the PR with a "thank you" message
-            (0, github_1.addComment)(octokit, pr, `@${login},\n\n${message}`);
+            (0, github_1.addComment)(octokit, pr, `@${login},\n\n${message}\n\n— Powered by [Daffy](https://daffy.org))`);
             core.info(`💰 A gift of $${amount} has been sent to ${name}<${email}>`);
         }
         catch (exception) {
-            if (exception instanceof Error)
-                core.setFailed(exception.message);
+            const message = exception instanceof Error ? exception.message : 'unknown error';
+            core.setFailed(message);
         }
     });
 }
