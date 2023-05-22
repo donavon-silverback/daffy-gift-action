@@ -1,8 +1,8 @@
 {
-  "name": "typescript-action",
+  "name": "daffy-gift-action",
   "version": "0.0.0",
   "private": true,
-  "description": "TypeScript template action",
+  "description": "Gift a charitable donation to a GitHub user who fixes an Issue.",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/donavon-silverback/daffy-gift-action.git"
   },
   "keywords": [
     "actions",

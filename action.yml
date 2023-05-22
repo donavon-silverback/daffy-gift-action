@@ -1,5 +1,5 @@
 name: 'Daffy Gift Action'
-description: 'Provide a description here'
+description: 'Gift a charitable donation to a GitHub user who fixes an Issue.'
 author: 'Donavon West - Daffy.org'
 inputs:
   github_token:
