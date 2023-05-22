@@ -2,10 +2,10 @@ name: 'Daffy Gift Action'
 description: 'Provide a description here'
 author: 'Donavon West - Daffy.org'
 inputs:
-  github-token:
+  github_token:
     required: true
     description: 'Your GitHub token.'
-  api-key:
+  daffy_api_key:
     required: true
     description: 'Your Daffy API key. Learn more at https://docs.daffy.org'
 runs:
