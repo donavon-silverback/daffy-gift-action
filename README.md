@@ -51,5 +51,5 @@ Now that you have your action setup, it's time to use it! You will need to creat
 ## TODO
 
 - [ ] Attach the PR author's email address to the gift.
-- [ ] Add a comment to the PR letting the author know they received a gift (write permission required on token).
+- [ ] Add a comment to the PR letting the author know they received a gift ([write permission required](https://docs.github.com/en/actions/security-guides/automatic-token-authentication) on token).
 - [ ] Publish the action to the Actions Marketplace
