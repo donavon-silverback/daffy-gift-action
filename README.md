@@ -1,4 +1,4 @@
-# Daddy Gift GitHub Action
+# Daffy Gift GitHub Action
 
 <img src="https://daffy.ghost.io/content/images/2023/03/6.png" width="608" height="342" />
 
