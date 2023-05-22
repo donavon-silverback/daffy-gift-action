@@ -4,7 +4,7 @@ author: 'Donavon West - Daffy.org'
 inputs:
   github-token:
     required: true
-    description: 'Your GitHub token. Typically ${{ secrets.GITHUB_TOKEN }}'
+    description: 'Your GitHub token. Typically \${{ secrets.GITHUB_TOKEN }}'
   api-key:
     required: true
     description: 'Your Daffy API key. Learn more at https://docs.daffy.org'
