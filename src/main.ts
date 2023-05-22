@@ -44,9 +44,7 @@ async function run(): Promise<void> {
     const { email, name, login } = getPullRequestAuthor(pr);
 
     if (!pr.merged) {
-      core.info(
-        `💰 Once this PR is merged, a gift of $${amount} will be sent to ${name}<${email}>`
-      );
+      core.info(`💰 Once this PR is merged, a gift of $${amount} will be sent to ${name}`);
       return;
     }
 
@@ -57,9 +55,8 @@ async function run(): Promise<void> {
 
     // Add a comment to the PR with a "thank you" message
     addComment(octokit, pr, `@${login},\n\n${message}\n\n— Powered by [Daffy](https://daffy.org))`);
-    core.info(`💬 Comment added to PR #${pr.number}`);
 
-    core.info(`💰 A gift of $${amount} has been sent to ${name}<${email}>`);
+    core.info(`💰 A gift of $${amount} has been sent to ${name}`);
   } catch (exception) {
     const message = exception instanceof Error ? exception.message : 'unknown error';
     core.setFailed(message);
