@@ -1,6 +1,6 @@
 # Daddy Gift GitHub Action
 
-Gift a charitable donation to a GitHub user who fixes an Issue.
+Reward the people who contribute to your open source projects by gifting a charitable donation to the charity of their choice.
 
 Imagine you have a project that you want to encourage people to contribute to. You can use this GitHub Action to gift a charitable donation to the person who fixes an high-profile Issue.
 
@@ -48,5 +48,6 @@ Now that you have your action setup, it's time to use it! You will need to creat
 
 ## TODO
 
-- Attach the PR author's email address to the gift.
-- Add a comment to the PR letting the author know they received a gift (write permission required on token).
+[ ] Attach the PR author's email address to the gift.
+[ ] Add a comment to the PR letting the author know they received a gift (write permission required on token).
+[ ] Publish the action to the Actions Marketplace
