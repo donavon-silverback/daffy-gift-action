@@ -224,6 +224,7 @@ const daffy_1 = __nccwpck_require__(4044);
 const github_1 = __nccwpck_require__(5928);
 const getAmount_1 = __nccwpck_require__(9287);
 function run() {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const token = core.getInput('github_token');
@@ -256,7 +257,8 @@ function run() {
             }
             // Get the PR author's GitHub email address and name
             const { email, name, login } = (0, github_1.getPullRequestAuthor)(pr);
-            if (!pr.merged) {
+            const isMerged = (_a = github.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.merged;
+            if (!isMerged) {
                 core.info(`💰 Once this PR is merged, a gift of $${amount} will be sent to ${name}`);
                 return;
             }

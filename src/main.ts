@@ -43,7 +43,8 @@ async function run(): Promise<void> {
     // Get the PR author's GitHub email address and name
     const { email, name, login } = getPullRequestAuthor(pr);
 
-    if (!pr.merged) {
+    const isMerged = github.context.payload.pull_request?.merged;
+    if (!isMerged) {
       core.info(`💰 Once this PR is merged, a gift of $${amount} will be sent to ${name}`);
       return;
     }

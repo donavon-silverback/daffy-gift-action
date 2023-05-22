@@ -2,6 +2,7 @@ name: Daffy Gift
 
 on:
   pull_request:
+    types: [closed]
 
 jobs:
   gift: # sends a gift to the PR author when the PR is merged
