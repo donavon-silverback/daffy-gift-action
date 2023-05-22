@@ -7,6 +7,7 @@ import { getAmount } from './getAmount';
 async function run(): Promise<void> {
   try {
     const token = core.getInput('github_token');
+    core.info(`token: ${JSON.stringify(token, null, 2)}`);
     if (!token) throw new Error('GitHub token not found');
 
     const apiKey = core.getInput('daffy_api_key');
