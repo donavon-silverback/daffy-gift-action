@@ -115,9 +115,9 @@ exports.addComment = exports.getLabelText = exports.getAssociatedIssues = export
 const github = __importStar(__nccwpck_require__(5438));
 const getPullRequest = (octokit) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    if (github.context.eventName !== 'pull_request') {
-        throw new Error('This action only runs on pull requests');
-    }
+    // if (github.context.eventName !== 'pull_request') {
+    //   throw new Error('This action only runs on pull requests');
+    // }
     const number = (_a = github.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.number;
     if (!number)
         throw new Error('No pull request number found');

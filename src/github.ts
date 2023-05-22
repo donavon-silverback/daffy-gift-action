@@ -2,9 +2,9 @@ import * as github from '@actions/github';
 import { Issue, Octokit, PullRequest } from './types';
 
 export const getPullRequest = async (octokit: Octokit): Promise<PullRequest> => {
-  if (github.context.eventName !== 'pull_request') {
-    throw new Error('This action only runs on pull requests');
-  }
+  // if (github.context.eventName !== 'pull_request') {
+  //   throw new Error('This action only runs on pull requests');
+  // }
   const number = github.context.payload.pull_request?.number;
   if (!number) throw new Error('No pull request number found');
 
